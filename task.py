@@ -1,34 +1,63 @@
-# Создай класс Task, который позволяет управлять задачами (делами).
-# У задачи должны быть атрибуты: описание задачи, срок выполнения и статус (выполнено/не выполнено).
+class Task:
+    def __init__(self, description, due_date):
+        self.description = description
+        self.due_date = due_date
+        self.is_completed = False
 
-# Ты разрабатываешь программное обеспечение для сети магазинов. Каждый магазин в этой сети
-# имеет свои особенности, но также существуют общие характеристики, такие как адрес, название и ассортимент товаров.
-# Ваша задача — создать класс Store, который можно будет использовать для создания различных магазинов.
-global numbers
-class Task():
-    def __init__(self, name, number, dedline, status):
-        self.name = name
-        self.number = number
-        self.dedline = dedline
-        self.status = status
+    def mark_completed(self):
+        self.is_completed = True
 
-    # Реализуй функцию для добавления задач, отметки выполненных задач
-    # и вывода списка текущих (не выполненных) задач.
-    def add_task(self):
-        self.name = input ('Веедите новую задачу текстом')
-        self.dedline = input ('Веедите дату окончания выполнения задачи в любом формате')
-        status = "активно"
-        self.number = self.number =+ 1
-        print(f'Введена новая задача № {self.number}.{self.name}. Срок исполнения до {self.dedline}')
+    def __str__(self):
+        status = "Выполнено" if self.is_completed else "Не выполнено"
+        return f"Задача: {self.description}, Срок: {self.due_date}, Статус: {status}"
 
-    def task_list(self):
-        for i in range(numbers):
-            print (Task.number, Task.name, )
+class TaskManager:
+    def __init__(self):
+        self.tasks = []
 
+    def add_task(self, description, due_date):
+        task = Task(description, due_date)
+        self.tasks.append(task)
 
-task1 = Task("Оплатить ЖКХ", 76, 54,"блондин")
+    def mark_task_completed(self, index):
+        if 0 <= index < len(self.tasks):
+            self.tasks[index].mark_completed()
+        else:
+            print("Неверный индекс задачи")
 
-while True:
-    task1.add_task()
-#task1.task_list()
+    def get_current_tasks(self):
+        return [task for task in self.tasks if not task.is_completed]
 
+    def show_tasks(self):
+        if not self.tasks:
+            print("Список задач пуст.")
+        else:
+            for index, task in enumerate(self.tasks):
+                print(f"{index}: {task}")
+
+    def show_current_tasks(self):
+        current_tasks = self.get_current_tasks()
+        if not current_tasks:
+            print("Нет текущих задач.")
+        else:
+            for task in current_tasks:
+                print(task)
+
+# Пример использования
+task_manager = TaskManager()
+
+# Добавление задач
+task_manager.add_task("Купить продукты", "2023-10-10")
+task_manager.add_task("Сдать проект", "2023-10-12")
+task_manager.add_task("Позвонить врачу", "2023-10-11")
+
+# Отметка задачи как выполненной
+task_manager.mark_task_completed(2)
+
+# Вывод текущих (не выполненных) задач
+print("\nТекущие задачи:")
+task_manager.show_current_tasks()
+
+# Вывод всех задач
+print("Все задачи:")
+task_manager.show_tasks()
